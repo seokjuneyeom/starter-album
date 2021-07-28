@@ -1,0 +1,13 @@
+server:
+  shutdown: immediate
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+application:
+  scheduler:
+    enabled: true
