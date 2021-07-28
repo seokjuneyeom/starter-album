@@ -1,7 +1,8 @@
 package com.vroong.album.service;
 
+import com.vroong.album.ObjectFactory;
+import com.vroong.album.api.model.SingerDto;
 import com.vroong.album.domain.Singer;
-import com.vroong.album.dto.SingerDto;
 import com.vroong.album.repository.SingerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ public class SingerServiceTest {
         Singer singer = Singer.builder().name("김가수").build();
         when(singerRepository.save(any())).thenReturn(singer);
 
-        SingerDto dto = singerService.createSinger(SingerDto.builder().name("김가수").build());
+        SingerDto dto = singerService.createSinger(ObjectFactory.getSingerDto());
 
         assertSoftly(softly -> {
             assertThat(dto).isNotNull();

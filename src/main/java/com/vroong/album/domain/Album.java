@@ -2,9 +2,8 @@ package com.vroong.album.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.vroong.album.api.model.AlbumDto;
 import com.vroong.album.config.Constants;
-import com.vroong.album.dto.AlbumDto;
-import com.vroong.album.service.AlbumDetailDto;
 import com.vroong.album.support.Carbon;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -14,10 +13,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -77,22 +74,5 @@ public class Album {
 
     public void markPublished(Instant publishedDate) {
         this.published = publishedDate;
-    }
-
-    public AlbumDetailDto toDetailDto() {
-        return AlbumDetailDto.builder()
-                .albumId(this.id)
-                .title(this.title)
-                .published(this.published.atOffset(ZoneOffset.UTC))
-                .singer(this.singer != null ? this.singer.toDto() : null)
-                .songs(this.songs.isEmpty() ? null : this.songs.stream().map(v -> v.toDto()).collect(Collectors.toList())).build();
-    }
-
-    public AlbumDto toDto() {
-        return AlbumDto.builder()
-                .albumId(this.id)
-                .published(Carbon.from(this.published, ZoneId.of(Constants.TIMEZONE_SEOUL)).toOffsetDateTime())
-                .title(this.title)
-                .build();
     }
 }

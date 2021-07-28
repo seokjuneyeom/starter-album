@@ -1,5 +1,6 @@
 package com.vroong.album.support;
 
+import com.vroong.album.api.model.PageDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

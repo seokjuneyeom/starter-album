@@ -1,11 +1,13 @@
 package com.vroong.album.service;
 
+import com.vroong.album.ObjectFactory;
+import com.vroong.album.api.model.AlbumDto;
+import com.vroong.album.api.model.AlbumListDto;
+import com.vroong.album.api.model.SingerDto;
+import com.vroong.album.api.model.SongDto;
 import com.vroong.album.domain.Album;
 import com.vroong.album.domain.Singer;
 import com.vroong.album.domain.Song;
-import com.vroong.album.dto.AlbumDto;
-import com.vroong.album.dto.SingerDto;
-import com.vroong.album.dto.SongDto;
 import com.vroong.album.repository.AlbumRepository;
 import com.vroong.album.repository.SingerRepository;
 import com.vroong.album.repository.SongRepository;
@@ -24,7 +26,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +44,7 @@ public class AlbumServiceTest {
     @Test
     @DisplayName("앨범 생성 후, 성공")
     void createAlbum() {
-        final AlbumDto req = getAlbumDto();
+        final AlbumDto req = ObjectFactory.getAlbumDto();
         final Album stub = Album.createFrom(req);
         when(albumRepository.save(any())).thenReturn(stub);
 
@@ -54,7 +55,7 @@ public class AlbumServiceTest {
     @Test
     @DisplayName("앨범 목록을 불러옴")
     public void testListAlbums() {
-        final AlbumDto req = getAlbumDto();
+        final AlbumDto req = ObjectFactory.getAlbumDto();
         final Album album = Album.createFrom(req);
         Page<Album> stub = new PageImpl<>(Collections.singletonList(album));
         when(albumRepository.findAll(PaginationUtils.getPageable()))
@@ -69,9 +70,9 @@ public class AlbumServiceTest {
     @DisplayName("앨범과 가수 연결")
     public void testAssociateSinger() {
         when(singerRepository.findById(any()))
-                .thenReturn(Optional.of(Singer.createFrom(getSingerDto())));
+                .thenReturn(Optional.of(Singer.createFrom(ObjectFactory.getSingerDto())));
         when(albumRepository.findById(any()))
-                .thenReturn(Optional.of(Album.createFrom(getAlbumDto())));
+                .thenReturn(Optional.of(Album.createFrom(ObjectFactory.getAlbumDto())));
 
         albumService.associateSinger(1L, 1L);
         Optional<Album> album = albumRepository.findById(1L);
@@ -86,9 +87,9 @@ public class AlbumServiceTest {
     @DisplayName("앨범과 음악 연결")
     public void testAssociateSong() {
         when(songRepository.findById(any()))
-                .thenReturn(Optional.of(Song.createFrom(getSongDto())));
+                .thenReturn(Optional.of(Song.createFrom(ObjectFactory.getSongDto())));
         when(albumRepository.findById(any()))
-                .thenReturn(Optional.of(Album.createFrom(getAlbumDto())));
+                .thenReturn(Optional.of(Album.createFrom(ObjectFactory.getAlbumDto())));
 
         albumService.associateSong(1L, 1L);
         Optional<Album> album = albumRepository.findById(1L);
@@ -100,20 +101,5 @@ public class AlbumServiceTest {
 
     }
 
-    private AlbumDto getAlbumDto() {
-        return AlbumDto.builder()
-                .title("다시부르기")
-                .published(OffsetDateTime.parse("1993-03-01T09:00:00+09:00"))
-                .build();
-    }
 
-    private SingerDto getSingerDto() {
-        return SingerDto.builder()
-                .name("김광석")
-                .build();
-    }
-
-    private SongDto getSongDto() {
-        return SongDto.builder().title("자동차").playTime("03:20").build();
-    }
 }

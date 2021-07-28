@@ -1,8 +1,11 @@
 package com.vroong.album.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.vroong.album.dto.SingerDto;
-import lombok.*;
+import com.vroong.album.api.model.SingerDto;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -48,7 +51,4 @@ public class Singer {
         }
     }
 
-    public SingerDto toDto() {
-        return SingerDto.builder().name(this.name).singerId(this.id).build();
-    }
 }

@@ -1,6 +1,6 @@
 package com.vroong.album.domain;
 
-import com.vroong.album.dto.SongDto;
+import com.vroong.album.api.model.SongDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,9 +45,5 @@ public class Song {
     public void associateSinger(Singer singer) {
         this.singer = singer;
         singer.addSong(this);
-    }
-
-    public SongDto toDto() {
-        return SongDto.builder().songId(this.id).title(this.title).playTime(this.playTime).build();
     }
 }

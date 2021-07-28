@@ -1,19 +1,18 @@
 package com.vroong.album.service;
 
+import com.vroong.album.api.model.AlbumDto;
+import com.vroong.album.api.model.AlbumListDto;
 import com.vroong.album.domain.Album;
-import com.vroong.album.dto.AlbumDto;
 import com.vroong.album.repository.AlbumRepository;
 import com.vroong.album.repository.SingerRepository;
 import com.vroong.album.repository.SongRepository;
+import com.vroong.album.service.mapper.AlbumMapper;
 import com.vroong.album.support.PaginationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +21,12 @@ public class AlbumService {
     private final AlbumRepository albumRepository;
     private final SongRepository songRepository;
     private final SingerRepository singerRepository;
+    private final AlbumMapper albumMapper;
 
     @Transactional
     public AlbumDto createAlbum(AlbumDto albumDto) {
-        Album entity = Album.createFrom(albumDto);
-        albumRepository.save(entity);
-        return entity.toDto();
+        Album album = albumRepository.save(Album.createFrom(albumDto));
+        return albumMapper.toDto(album);
     }
 
     @Transactional
@@ -52,12 +51,7 @@ public class AlbumService {
     public AlbumListDto listAlbums(Pageable pageable) {
         final Page<Album> page = albumRepository.findAll(pageable);
         return new AlbumListDto()
-                .data(convertDtoList(page.getContent()))
+                .data(albumMapper.toDetailDto(page.getContent()))
                 .page(PaginationUtils.getPageDto(page));
-    }
-
-    private List<AlbumDetailDto> convertDtoList(List<Album> content) {
-     return content.stream().map(album -> album.toDetailDto()
-        ).collect(Collectors.toList());
     }
 }
