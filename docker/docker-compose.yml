@@ -1,0 +1,21 @@
+# CAVEAT - THIS FILE MUST BE USED FOR LOCAL DEVELOPMENT PURPOSE ONLY
+# For full spec of docker-compose: @see @see https://docs.docker.com/compose/compose-file/
+version: '3'
+
+services:
+
+  mysql:
+    image: mysql:5.7.32
+    container_name: mysql
+    volumes:
+      - $HOME/mysql_data:/var/lib/mysql/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - 3306:3306
+    command: mysqld --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+    healthcheck:
+      test: mysql -e -uroot -psecret -e 'SELECT 1' || exit 1
+      interval: 60s
