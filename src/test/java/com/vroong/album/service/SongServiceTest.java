@@ -1,8 +1,8 @@
 package com.vroong.album.service;
 
-import com.vroong.album.domain.Singer;
-import com.vroong.album.dto.SingerDto;
-import com.vroong.album.repository.SingerRepository;
+import com.vroong.album.domain.Song;
+import com.vroong.album.dto.SongDto;
+import com.vroong.album.repository.SongRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +15,23 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class SingerServiceTest {
+public class SongServiceTest {
 
     @Autowired
-    private SingerService singerService;
+    private SongService songService;
 
-    @MockBean
-    private SingerRepository singerRepository;
+    @MockBean private SongRepository songRepository;
 
     @Test
-    @DisplayName("가수를 생성하면, 성공")
-    void 가수생성_성공() {
+    @DisplayName("음악을 생성하면, 성공")
+    void 음악생성() {
+        Song song = Song.builder().title("자동차").playTime("03:20").build();
+        when(songRepository.save(any())).thenReturn(song);
 
-        Singer singer = Singer.builder().name("김가수").build();
-        when(singerRepository.save(any())).thenReturn(singer);
-
-        SingerDto dto = singerService.createSinger(SingerDto.builder().name("김가수").build());
-
+        SongDto dto = songService.createSong(SongDto.builder().title("자동차").playTime("03:20").build());
         assertSoftly(softly -> {
             assertThat(dto).isNotNull();
-            assertThat(dto.getName()).isEqualTo("김가수");
+            assertThat(dto.getTitle()).isEqualTo("자동차");
         });
     }
 }

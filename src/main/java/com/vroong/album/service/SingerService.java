@@ -14,8 +14,8 @@ public class SingerService {
     private final SingerRepository singerRepository;
 
     @Transactional
-    public SingerDto createSinger(Singer singer) {
-        Singer save = singerRepository.save(singer);
+    public SingerDto createSinger(SingerDto dto) {
+        Singer save = singerRepository.save(Singer.createFrom(dto));
         return save.toDto();
     }
 }
