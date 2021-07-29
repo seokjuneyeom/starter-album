@@ -11,3 +11,8 @@
 - 1에서 진행한 부분에 DTO 를 전부 OpenApi Generator 를 통해 만들어지도록 수정
 - Swagger 빌드 추가
 - Entity <-> DTO 간 transform 을 간편하게 하기 위해 mapStruct 추가
+
+# session3 : DB connection
+
+- 도커를 이용해 DB 컨테이너 생성
+- 해당 컴포즈 파일을 빌드하기 위한 docker.gradle 파일 생성
