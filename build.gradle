@@ -57,8 +57,17 @@ dependencies {
     // OpenApi Bug workaround @see https://github.com/OpenAPITools/openapi-generator/issues/3668
     implementation 'io.swagger:swagger-annotations:1.5.17'
 
+    implementation platform('org.zalando:logbook-bom:2.4.1');
 
+    // @see https://github.com/zalando/logbook
+    implementation 'org.zalando:logbook-spring-boot-starter'
 
+    // RFC 7807  Problem Details for HTTP APIs
+    // @see https://github.com/zalando/problem-spring-web/tree/main/problem-spring-web
+    implementation 'org.zalando:problem-spring-web-starter:0.26.2'
+
+    // SPRING CLOUD SECURITY
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
